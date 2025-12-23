@@ -1,0 +1,91 @@
+\section{Utilities of TON}
+\label{section:uitility}
+
+In this section, we define the three primary utilities of the TON token within the L2 ecosystem: security, gas, and governance. We detail how each utility connects the token’s value to the network’s operational integrity and growth.
+
+\subsection{L2 security}
+
+TON strengthens L2 security through a multi-tiered structure rather than a single mechanism. This tiered security model is designed so that sequencers, validators, and challengers function independently yet complement one another, with TON-based economic penalties (slashing) enforcing correct behavior at every stage.
+
+The first tier (Tier 1) is the public challenge (fraud-proof) mechanism. If a sequencer submits an invalid state transition, anyone can submit a fraud proof to dispute it. If the sequencer's state transition is proven to be fraudulent during the challenge process, it is subject to slashing. This serves as the fundamental safeguard ensuring that incorrect states will not finalize on Ethereum L1. However, since public challenges do not define explicit verification roles, it remains uncertain who will actually perform verification.
+
+The second tier (Tier 2) consists of dedicated validators with explicit verification responsibilities. Validators monitor and verify sequencer state transitions and can immediately raise disputes when they detect invalid states. However, validators also face the verifier's dilemma, as the trade-off between verification cost and low fraud probability creates an incentive to reduce attention and free-ride on other validators.
+
+% The third tier (Tier 3) is RAT, introduced in Section~\ref{subsec:risk-mitigation-mechanisms}. RAT randomly selects validators at unpredictable times to verify specific L2 batches and submit attestations within a time window. Because validators cannot anticipate when they will be selected, maintaining constant attentiveness becomes the dominant strategy. This transforms the dilemma: rather than free-riding, validators are incentivized to stay prepared for RAT challenges at all times. Validators that fail to respond or submit false attestations are subject to slashing, significantly strengthening L2 security through continuous, incentive-aligned verification.
+
+The third tier (Tier 3) is RAT, introduced in Section~\ref{subsec:risk-mitigation-mechanisms}. RAT addresses this incentive problem through probabilistic auditing: validators are randomly selected at unpredictable times and required to verify specific L2 batches and submit attestations within a given time window. Because selection is unpredictable, validators cannot anticipate when they will be tested, making consistent monitoring the dominant strategy. Validators that fail to respond or are proven dishonest are subject to slashing, ensuring that the expected cost of skipping verification exceeds any short-term savings.
+
+Through this multi-tiered structure, both sequencers and validators are economically incentivized to behave honestly. Since slashing at each tier is applied to TON-denominated collateral, L2 security is anchored to the economic foundation of the TON ecosystem.
+
+\subsubsection{Economic Security for Sequencers}
+The economic security mechanisms applicable to sequencers correspond to Tiers 1 and 2 of the three-tiered model. All collateral and slashing are denominated and executed in TON.
+
+\vspace{0.3cm}
+
+\paragraph{\textbf{Multi-Challenger Fraud Proof.}}
+In single-winner challenge systems, only the first valid challenger receives a reward. This creates a problem: if a malicious L1 proposer/builder controls transaction ordering between challenges, honest challengers may be entirely excluded and lose their verification costs. Tokamak Network instead adopts a multi-winner approach, where all valid fraud proofs submitted within the dispute period are recognized and rewarded. This reduces the risk that honest challengers are excluded due to ordering manipulation, regardless of the presence of colluding parties.
+
+\vspace{0.3cm}
+
+\paragraph{\textbf{Sequencer Deposits.}}
+The protocol requires each sequencer to maintain a collateral bond ($D_{\text{sequencer}}$) representing their commitment to the network. Let $C_{\max}$ denote the estimated worst-case on-chain cost of executing a single fraud proof. Since Tokamak Network supports multiple independent challengers submitting fraud proofs concurrently, the bond must cover all challengers' verification costs plus an additional reward pool. Let $H_{\max}$ denote the maximum number of concurrent challengers and $\Delta_{sequencer}$ the additional reward provided by a sequencer. The collateral bond is expressed as:
+\begin{equation}
+D_{\text{sequencer}} = H_{\max} \cdot C_{\max} + \Delta_{sequencer}
+\end{equation}
+
+\paragraph{\textbf{Sequencer Slashing.}}
+When a fraud proof succeeds, whether submitted by a challenger or validator, the entire bond ($D_{\text{sequencer}}$) is slashed. If $n$ challengers win the challenge (where $n \leq H_{\max}$), each successful challenger receives:
+\begin{equation}
+R_{\text{challenger}} = C_{\max} + \frac{\Delta_{sequencer}}{n}
+\end{equation}
+The remainder is transferred to the protocol treasury. This is intended to provide rewards that can exceed verification costs. A slashed sequencer is suspended from sequencing according to protocol rules. To resume operation, the sequencer must restore the bond within the re-bond period; failure to do so results in permanent removal from the active sequencer set. However, if the system has multi-sequencer enabled, other sequencers can continue L2 operation during this period.
+
+\begin{comment}
+To strengthen deterrence against repeat violations, if a sequencer commits fraud multiple times within a specified period, the required bond amount increases by a penalty factor $\gamma > 1$. A slashing window is applied from the point of slashing, and within this window, the required $D_{\text{sequencer}}$ for subsequent violations increases as follows:
+\begin{equation}
+D_{\text{sequencer}}^{(n)} = \gamma^{n-1} \cdot D_{\text{sequencer}}^{(1)}
+\end{equation}
+where $n$ is the number of violations. Through this escalating penalty for repeated misconduct, Tokamak Network L2 aims to enhance the soundness of the L2 ecosystem. Note that fraud by other sequencers is not considered; only fraud by the same sequencer is taken into account. Failure to post the increased bond results in removal from the active sequencer set.
+
+\subsubsection{Economic Security for Validators}
+The economic security mechanisms applicable to validators correspond to Tier 3 of the three-tiered model. As with the sequencer, all deposits and slashing are denominated and conducted in TON.
+\end{comment}
+
+\vspace{0.3cm}
+
+\paragraph{\textbf{Validator Deposits.}}
+Each validator is required to maintain a collateral deposit $D_{\text{validator}}$ that serves as the economic guarantee of its attentiveness. According to recent research by Tokamak Network~\cite{Lee2025RAT}, this can be analyzed from a game-theoretic perspective: each validator faces a binary strategic choice in every epoch, either remain attentive (online) or become inattentive (offline). Let $c_m$ denote the per-epoch cost of maintaining attentiveness. Staying attentive incurs $c_m$ but avoids penalties. Going offline saves this cost but risks being selected by RAT and penalized. Let $\pi_a$ denote the system-wide probability that RAT triggers an attention test in a given epoch, and let $N$ be the number of validators. When RAT triggers, one validator is selected uniformly at random, so each validator faces a selection probability of $\frac{\pi_a}{N}$. For attentiveness to be the dominant strategy, the expected penalty from being offline must exceed the cost savings. Let $C_{\text{off}}$ denote the slashing penalty for failing an attention test. The RAT equilibrium condition under the model ensuring that online behavior strictly dominates offline behavior is given by
+\begin{equation}
+  c_m \;\le\; \frac{\pi_a}{N} \cdot C_{\text{off}}.
+\end{equation}
+This condition implies that the validator's expected penalty from being offline, $\frac{\pi_a}{N} \cdot C_{\text{off}}$, must exceed the operating cost $c_m$. Accordingly, $C_{\text{off}}$ must satisfy
+\begin{equation}
+  C_{\text{off}} \;\ge\; \frac{c_m N}{\pi_a}.
+\end{equation}
+Letting $\Delta_{\text{validator}}$ denote an additional buffer contributed by the validator, the deposit is expressed as:
+\begin{equation}
+  D_{\text{validator}} = C_{\text{off}} + \Delta_{\text{validator}}.
+\end{equation}
+This structure ensures that even after a slashing event, the validator retains sufficient collateral ($\Delta_{\text{validator}}$) to continue operating without immediate removal.
+
+\paragraph{\textbf{Validator Slashing.}}
+Slashing for validators is applied solely in the context of RAT. When an attention test is triggered with probability $\pi_a$, the selected validator must respond within the required time window. Failure to do so triggers a slashing event in which a penalty $C_{\text{off}}$ is deducted from the validator's deposit. If the remaining deposit falls below the minimum threshold $D_{\min}$, the validator must replenish it within a specified period; otherwise, the validator is removed from the active validator set. The mechanism is designed so that, under the chosen parameters, attentiveness is each validator’s rational strategy.
+
+\subsection{L2 Gas}
+TON functions as the native gas token consumed for transaction execution on L2. Users pay TON for all activities on L2, including contract calls, data processing, and asset transfers, creating an ongoing, utility-driven source of demand for TON. As transaction volume on L2 increases, the amount of TON consumed also rises, meaning the gas utility of TON is closely tied to the scalability and throughput of L2.
+
+For TON to serve as a gas token, an L2 must secure sufficient TON liquidity and establish TON-based payment pathways. This structure positions TON not merely as a transaction fee token but as a foundational asset for economic activity occurring on L2. The more L2 services are designed around TON, the more TON becomes the standard asset across the entire ecosystem.
+
+L2s must post data to Ethereum L1 during operation, and the associated L1 security costs must be paid in ETH. For TON to remain a sustainable gas token, the aggregate demand for TON within L2 must exceed the ETH costs required for L1 settlement. By expanding TON utilities such as gas payments, bridging, fast withdrawals, and dApp services, L2s can generate sufficient TON-denominated value to offset L1 security expenses. For example, fast withdrawal services create a structure where liquidity providers deposit TON and receive withdrawal gas fees in TON, thereby strengthening both TON utility and liquidity simultaneously.
+
+The use of TON for transaction execution and asset bridging on L2 promotes a cyclical pattern of utilization. As TON usage increases on L2, the volume of bridged TON also expands, which in turn supports the emergence of diverse dApps and services built around TON. When this reinforcing loop emerges (L2 growth $\rightarrow$ increased TON transactions $\rightarrow$ increased bridged TON $\rightarrow$ expansion of TON-based services), TON becomes a common and self-sustaining value-transfer asset within a multi-rollup environment.
+
+\subsection{DAO Governance as a Utility of TON}
+
+TON functions as the sole governance asset within Tokamak Network, enabling a decentralized and economically grounded decision-making framework. Governance authority is not assigned arbitrarily; it is earned through TON staking and expressed through the DAO's on-chain committee mechanism.
+
+Tokamak DAO was designed from the outset with a multi-rollup environment in mind, enabling L2 operators and sequencers to participate directly in governance. The Tokamak Rollup Hub SDK includes a pre-deployed contract for DAO participation. This allows L2 operators to join the DAO simply by staking a minimum amount of TON without developing a separate contract, naturally linking L2 identity and governance participation through TON.
+
+Governance influence is determined by the amount of staked TON. Participants with larger stakes have greater say in protocol decisions. This structure ensures that governance power reflects measurable economic commitment and aligns participant incentives with the long-term health of the network.
+
+Through this structure, TON becomes integrated with the lifecycle of L2 development. L2 networks with meaningful economic activity gain stronger incentives to accumulate TON. This secures their operational presence and grants governance authority over protocol parameters and reward distribution. By making TON the exclusive instrument for governance participation and agenda approval, Tokamak Network grounds governance in transparent, on-chain economic metrics.

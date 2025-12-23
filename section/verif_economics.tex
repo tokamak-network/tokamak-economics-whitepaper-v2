@@ -1,0 +1,139 @@
+\section{Verification economics}
+\label{sec:verification_economcis}
+
+In this section, we explore the fundamental challenges of blockchain scalability and the necessity of verification economics. We outline the roles of key actors within the Tokamak Network ecosystem and introduce risk mitigation mechanisms that strengthen validator-aligned security and improve the reliability of participant behavior.
+
+\subsection{Blockchains scalability and verification concerns}
+
+Early general-purpose blockchains attempted to scale by increasing on-chain execution capacity.
+However, execution throughput, state size, and verification cost tend to grow together.
+As the chain becomes more heavily used, full nodes must process more transactions per unit time, store a larger global state, and spend more resources to verify new blocks.
+Over time, this creates an implicit economic filter:
+only entities that can afford the rising operational cost can remain fully verifying participants.
+
+Rollup-based architectures decouple execution from base-layer consensus.
+Execution is moved to a separate layer (an L2 rollup) while the L1 blockchain like Ethereum provides data
+availability and a final arbiter of correctness.
+In this model, the bottleneck is not how many computations the L1 can perform, but how many state transitions it can verify or accept as economically safe.
+Rollups extend the total execution capacity of the ecosystem, but they do not eliminate the requirement that at least some participants continuously monitor and verify off-chain activity.
+
+There are two dominant rollup constructions.
+Optimistic rollups assume that submitted state transitions are valid by default and rely on \emph{fraud proofs} (or called fault proofs): if any party detects an invalid state transition, it can submit a proof that demonstrates the fraud to the L1.
+ZK rollups require each batch of state transitions to be accompanied by a succinct cryptographic proof of correctness, known as a validity proof.
+Both models improve scalability, yet both are constrained by verification:
+someone must either detect and prove fraud, or produce and verify succinct proofs.
+In addition, both models are subject to data-availability constraints that must ultimately be resolved on the L1.
+
+Verification in such systems is not free.
+Monitoring rollup activity requires computational resources and capital at risk.
+Submitting fraud proofs or producing validity proofs incurs gas costs and opportunity costs.
+On the other hand, the economic damage from a successful attack (for example, inclusion of a fraudulent batch or failure to respond to an invalid state transition) can be much larger than the individual cost that a single verifier faces.
+Without explicit incentives, rational agents have little reason to bear the full cost of verification, and verification becomes underprovided.
+
+The core design problem is therefore economic. The protocol must ensure that the expected reward for honest verification, and the expected penalty
+for dishonest or negligent behavior, are large enough that rational agents prefer to verify.
+This is what we call \emph{verification economics}.
+A verification-economics layer is responsible for:
+\begin{itemize}
+  \item assigning well-defined roles and responsibilities to actors such as sequencers and validators,
+  \item allocating rewards to those who perform verification and monitoring work, and
+  \item imposing penalties on those who introduce or tolerate incorrect state transitions.
+\end{itemize}
+
+In the Tokamak Network ecosystem, the TON token is the asset that backs this verification-economics layer.
+TON is staked by ecosystem actors to provide an economic bond that can be penalized if they misbehave or fail to fulfill their verification duties.
+Rewards that originate from protocol-level seigniorage are distributed to these stakers when they act honestly.
+The verification layer is designed to be \emph{proof-system agnostic}:
+while the present exposition focuses on optimistic rollups and fraud proofs, the same economic framework can be applied to validity rollups.
+In particular, the security condition that adversarial behavior must be economically disincentivized (i.e., expected loss exceeds expected gain) applies whether invalid behavior is detected ex post via fraud proofs or ruled out ex ante via cryptographic validity.
+\vspace{1cm}
+
+
+
+
+\subsection{Tokamak Network (TON) rollup ecosystem}
+
+Tokamak Network is a multi–rollup framework on Ethereum that uses TON as a common economic security and governance asset.
+Each Tokamak L2 rollup (hereafter simply `L2') is operated by a set of actors whose incentives are coupled through TON staking and reward mechanisms. Figure~\ref{fig:overview} illustrates the high-level architecture and the structural relationships between these key components within the Tokamak Network ecosystem. The ecosystem consists of the following components. 
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=0.9\linewidth]{figs/Overview-C.jpg}
+\caption{Tokamak Network Ecosystem Overview}
+\label{fig:overview}
+\end{figure}
+% the figure is designed by Monica
+
+\vspace{0.3cm}
+
+\textbf{Sequencers.}
+Sequencers are responsible for the overall validity and liveness of the L2 chain. Their core duties include collecting transactions, ordering them, and executing them off-chain. Furthermore, in the network's current state, the Sequencer also assumes the role of the Proposer, periodically posting batched transaction data and state commitments to Ethereum. This integrated model ensures operational efficiency, though the protocol is designed to recognize the logical distinction between ordering (sequencing) and L1 submission (state proposing) for future decentralization.
+
+To participate as a sequencer for a particular L2, a rollup operator must stake TON. The size and conditions of this stake are specified at the protocol level and can be refined through governance. A sequencer earns revenue from L2 transaction fees and from protocol-level rewards that are allocated to its L2, but it is also subject to penalties: if the sequencer attempts to introduce invalid state transitions, censors transactions in violation of protocol rules, or fails to meet availability and liveness requirements, its stake can be slashed. 
+
+\vspace{0.3cm}
+
+\textbf{Validators.}
+Validation is permissionless: any actor may monitor L2 activity and check that sequencers' state transitions are correct.
+In an optimistic rollup setting, validators can submit fraud proofs to the L1 when they detect invalid transitions.
+
+Validators may optionally register as \textit{staked validators} by staking TON as economic collateral to provide continuous verification.
+Staked validators are eligible for protocol-level incentives tied to the overall performance of the L2 ecosystem and may earn fees and bounties associated with successful fraud proofs or challenge outcomes.
+If a staked validator fails to perform required verification tasks or submits false claims, the protocol can slash its stake.
+The precise staking and slashing rules are described in later sections.
+
+
+
+Tokamak Network will support a \emph{shared validator set} across multiple L2s.
+A validator stakes TON once and can then participate in the verification of several L2s according to protocol-defined rules.
+This structure allows smaller and early-stage L2s, which may not have sufficient fees or stake to sustain dedicated validator sets, to inherit meaningful economic security from the global TON staking pool rather than having to bootstrap their own isolated validator sets.
+It also enables cross-rollup diversification for validators and improves overall capital efficiency of the verification layer.
+
+\vspace{0.3cm}
+
+\textbf{TON DAO.}
+The TON DAO (Decentralized Autonomous Organization) is the governance body responsible for setting and updating protocol parameters, including those related to verification economics.
+The DAO authorizes treasury allocations under its governance process. The treasury may hold TON and other assets. A portion of newly issued tokens and protocol revenues is sent to the DAO treasury, which can be used to support public goods, bootstrap new L2s, or adjust the incentive structure when necessary.
+The DAO can, for example, adjust challenge windows, slashing ratios, minimum stake requirements, or the relative weight of rewards allocated to sequencers and validators.
+In this way, the DAO acts as a meta-layer that maintains the long-term sustainability of the verification-economics framework.
+
+\vspace{0.3cm}
+
+
+\textbf{High-level TON flows.}
+Across these components, the TON token plays several interconnected roles:
+\begin{itemize}
+  \item as staked collateral for sequencers and validators, which backs the economic security of each L2,
+  \item as a fee asset for L2 transactions, whose collection and distribution rules are governed at the protocol and DAO levels, and
+  \item as the unit in which protocol-level seigniorage and rewards are denominated and allocated to L2 participants.
+\end{itemize}
+Subsequent sections describe in detail how staking and slashing define L2 security, how gas fees are collected and distributed, and how seigniorage is generated and allocated across the L2 ecosystem.
+In the remainder of this section we focus on specific mechanisms that mitigate core risks in optimistic rollups and shape the economic incentives of verifiers.
+
+
+\subsection{Risk mitigation mechanisms}
+\label{subsec:risk-mitigation-mechanisms}
+
+Optimistic rollups introduce a specific family of risks.
+Sequencers may attempt to post invalid state transitions or censor transactions.
+Validators may fail to monitor the system or to respond to fraud in a timely manner.
+Users and liquidity providers face withdrawal delays and bear the risk that the system does not respond correctly to invalid states during the challenge period.
+
+While optimistic rollups rely on the straightforward assumption that there is at least one honest validator, the verifier's dilemma \cite{luu2015demystifying} still arises in blockchain systems, and related failures have been observed in practice.
+Tokamak Network proposes two complementary mechanisms at the economic layer to address these incentive risks: the Randomized Attention Test (RAT), which incentivizes continuous verification effort by validators, and Fast Withdrawal, which allows users to exit L2s more quickly while tying liquidity provision to the security guaranteed by staked TON.
+
+
+\subsubsection{RAT}
+
+In an optimistic rollup, honest validators face a natural trade-off between the cost of continuously monitoring L2 outputs and the relatively low per-batch probability that any given state transition is fraudulent. Absent additional incentives, it can be individually rational for validators to reduce their level of attention and free-ride on the verification efforts of others, which undermines the security that staked TON is intended to provide. To deal with this, an attention test was proposed as a protocol-level mechanism that occasionally and unpredictably forces this latent verification decision to the surface by assigning explicit verification tasks backed by stake, so that neglecting verification becomes a dominated strategy.
+
+RAT instantiates this idea by randomly selecting subsets of validators at unpredictable times and requiring them to verify specific L2 batches within a given time window, using their staked TON as economic backing. Selected validators must check the batch and submit an attestation to its correctness. Those that respond promptly with honest attestations receive a validator fee, while those that fail to respond or are proven dishonest are subject to slashing. RAT is designed using game-theoretic principles so that the expected cost of reduced attention is higher than any short-term savings from skipping verification, aligning validators’ best response with sustained monitoring of L2 outputs.
+
+
+\subsubsection{Fast Withdrawal}
+
+While the RAT focuses on aligning validators’ incentives for continuous monitoring, a complementary approach to mitigating risk operates through withdrawal latency and liquidity. In both optimistic rollups and zk-rollups, users typically face a non-trivial delay between initiating a withdrawal and receiving L1 assets, whether due to a challenge period or proof-generation and finalization constraints. Although advances in rollup design and proving systems are likely to reduce withdrawal delays over time, it is unlikely that such delays disappear entirely. As long as some latency remains, there is economic room for specialized liquidity providers who front assets to exiting users in exchange for a fee, and then redeem the underlying withdrawals once they are finalized on L1. Fast Withdrawal addresses this latency by allowing users to exit a rollup and receive L1 assets (including TON and other tokenized assets) immediately, by borrowing liquidity from dedicated providers. 
+
+
+
+Fast Withdrawal providers effectively act as an additional layer of economically motivated verifiers. They stake their own assets and assess the current L2 state and withdrawal validity before fronting liquidity, then continue monitoring for signs of misbehavior while their capital remains at risk. The same economic security that backs L2 state, including staked TON and slashing rules, can penalize misbehaving sequencers and validators and compensate affected providers if fraud is later detected and the rollup state is reverted, thereby reinforcing the verification economics established by RAT.

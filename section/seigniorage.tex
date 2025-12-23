@@ -1,0 +1,99 @@
+\section{Seigniorage}
+\label{section:siegniorage}
+
+In this section, we present the mechanism of seigniorage generation and its distribution through TON Staking V3. We analyze the inflation schedule and the mathematical models ensuring the sustainable growth of L2 networks.
+
+\subsection{Sustainable Growth of Layer 2}
+
+TON seigniorage incentivizes sequencers to grow their L2 networks. Since seigniorage revenue is proportional to Bridged TON, sequencers are motivated to attract depositors and increase total deposits. However, deposit growth alone does not guarantee sustainability. If deposits are concentrated among a few large participants, a single withdrawal can destabilize seigniorage revenue. Sequencers will therefore work to diversify their depositor base by attracting various dApps and liquidity providers.
+
+As the depositor and user base grows and diversifies, sequencers can secure additional revenue sources beyond seigniorage: flexible fee policies, high-value applications, and other cash flows within the L2 ecosystem. This TON revenue is used to cover Ethereum L1 security costs, which must be paid in ETH. Even if sequencers sell TON to pay L1 fees, TON demand generated within the L2 ecosystem (such as utility fees) may offset this and help reduce net selling pressure under certain conditions. Seigniorage thus drives deposit growth while a diversified user base improves resilience, and together they form a more sustainable economic structure.
+
+\subsection{Seigniorage Generation}
+TON Seigniorage is generated at a fixed rate per block, which determines the inflation dynamics of the network. Let $S_0$ denote the initial supply and $S_{annual}$ the annual seigniorage. The total supply at year $t$ is $S(t) = S_0 + S_{annual} \cdot t$. The inflation rate at year $t$ is defined as:
+\begin{equation}
+r(t) = \frac{S_{annual}}{S(t)} = \frac{S_{annual}}{S_0 + S_{annual} \cdot t}
+\end{equation}
+
+As a baseline rule, the protocol issues 3.92 TON per Ethereum block interval. Before the Merge, blocks were produced approximately every 13 seconds, yielding an annual seigniorage of about 9,509,317 TON. Since the completion of the Merge on September 15, 2022~\cite{Buterin2022}, Ethereum's block time has been fixed at 12 seconds, resulting in an annual seigniorage of approximately 10,301,760 TON. Given $S_0 = 50{,}000{,}000$ TON and $S_{annual} \approx 9{,}509{,}317$ TON (pre-Merge), the initial inflation rate is approximately $19.0\%$. Over time, the inflation rate decreases as total supply grows, reaching about $7.3\%$ after ten years and approximately $1.9\%$ after fifty years. The discontinuity by the red dotted line in Figure~\ref{fig:ton_inflation} reflects the Merge transition point.
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=0.85\linewidth]{figs/seigniorage_generation.pdf}
+\caption{TON Inflation Rate Over Time}
+\label{fig:ton_inflation}
+\end{figure}
+
+\subsection{Seigniorage Distribution: TON Staking V3}
+
+Seigniorage distribution refers to the allocation of newly issued TON to participants. In TON Staking V3, the distribution amount is determined based on each L2's Bridged TON. L1 staking does not determine the distribution amount; rather, it functions as a minimum requirement to receive seigniorage. For details on TON Staking V1 and V2, please refer to the supplementary document provided in the references \cite{JeongPark2023}.
+
+\subsubsection{TON staking V3}
+
+TON Staking V3 is Tokamak Network's new token-economy model that distributes seigniorage based on the performance of L2 ecosystems. Figure~\ref{fig:seigniorage_allocation_structure} illustrates the overall structure of this model. While the previous V1/V2 models allocated rewards simply in proportion to the size of deposits, V3 defines Bridged TON as the primary performance metric of each L2 and uses it as the central criterion for distribution. This approach is intended to discourage artificial TVL inflation using external assets and provides a closer proxy for TON-native economic activity generated within the TON ecosystem. 
+
+As we can see in Figure~\ref{fig:seigniorage_allocation_structure}, the model distributes staking rewards in proportion to each L2's measured performance, but applies diminishing marginal returns as performance increases. This encourages early ecosystem growth and prevents excessive seigniorage concentration by large participants. When aggregate L2 performance is low, effective seigniorage distribution decreases, which drives continuous growth and enables effective supply management based on performance. Validators also share in these performance-based rewards, and their incentives are aligned with overall ecosystem growth.
+
+\vspace{0.5cm}
+
+\paragraph{\textbf{Core Tokenomics Rules}}
+The core tokenomics of TON Staking V3 follows the rules below:
+
+\textbf{Rule 1 (Fixed Annual Seigniorage).} The total annual seigniorage issuance $A$ is fixed.
+
+\textbf{Rule 2 (DAO Fixed Allocation).} A fixed portion of the annual seigniorage is allocated to the DAO:
+\begin{equation}
+S_{\mathrm{DAO}} = d \cdot A
+\end{equation}
+where $d \in (0,1)$ is the DAO distribution parameter. Additionally, any undistributed seigniorage to L2s is also allocated to the DAO, which may use the funds for ecosystem reinvestment and public infrastructure development. Under Rule 1, this structure indirectly controls the effective supply actually released.
+
+\textbf{Rule 3 (Bridged TON as Performance Metric).} L2 performance is measured by its Bridged TON amount. We define $B_i$ as the amount of TON bridged to L2 $i$, and $T_i$ as the amount of TON staked by the L2 sequencer on the L1 TON staking contract.
+
+\textbf{Rule 4 (Minimum Staking Requirement).} Seigniorage allocation is not weighted by staking size; however, each L2 must satisfy the minimum staking requirement to be eligible for seigniorage in a given period:
+\begin{equation}
+T_i \geq \theta \cdot B_i
+\end{equation}
+where $\theta \in (0,1]$ is the minimum staking ratio parameter determined by the protocol. This requirement discourages disproportionate growth that increases TVL without adequate economic security and enforces a baseline level of security without using staking as a reward weight.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\linewidth]{figs/basic_tokenomics_model_improved_v2.png}
+  \caption{Seigniorage Allocation Structure in TON Staking V3}
+  \label{fig:seigniorage_allocation_structure}
+\end{figure}
+
+The seigniorage eligibility of each L2 $i$ is expressed as an indicator function:
+\begin{equation}
+\mathbf{1}_i = \begin{cases} 1 & \text{if } T_i \geq \theta \cdot B_i \\ 0 & \text{otherwise} \end{cases}
+\end{equation}
+The effective Bridged TON of an eligible L2 is defined as $\tilde{B}_i = \mathbf{1}_i \cdot B_i$. The total performance $x$ is defined as the sum of effective Bridged TON across all L2s that meet the eligibility requirements during the given period:
+\begin{equation}
+x = \sum_{i} \tilde{B}_i = \sum_{i} \mathbf{1}_i \cdot B_i
+\end{equation}
+Bridged TON and Staked TON are not sampled at strictly fixed intervals. Instead, the protocol uses the latest observed values captured through on-chain calls, and the evaluation mechanism is structured to closely track periodic measurements over time.
+
+\vspace{0.5cm}
+
+\paragraph{\textbf{Seigniorage Allocation and Distribution}}
+The total seigniorage allocated to the L2 ecosystem is determined using the hyperbolic saturation function. This function imposes diminishing returns as performance increases, thereby preventing oversized L2s from capturing disproportionate rewards. The total L2 seigniorage $y(x)$ is defined as:
+\begin{equation}
+y(x) = L \cdot \frac{x}{k + x} = L \cdot \frac{\sum_i \tilde{B}_i}{k + \sum_i \tilde{B}_i}
+\end{equation}
+where $L$ is the upper bound of seigniorage allocated to L2s, defined as $L = (1-d) \cdot A$, and $k$ is the half-saturation point such that $y = L/2$ when $x = k$. The gap between $y(x)$ and the upper bound $L$ in Figure~\ref{fig:seigniorage_allocation_structure} represents undistributed seigniorage, which flows to the DAO treasury. A smaller $k$ results in faster initial growth and a more rapid decrease in marginal reward per unit of performance. This structure provides strong incentives during early growth while preventing excessive concentration of rewards among the largest L2s.
+
+The seigniorage allocated to each L2 is determined by distributing the total reward $y(x)$ in proportion to performance. The seigniorage received by L2 $i$, denoted as $S_i$, is given by:
+\begin{equation}
+S_i = y(x) \cdot \frac{\tilde{B}_i}{x}
+\end{equation}
+Rewards are divided between sequencers and validators according to a predefined ratio. Let $\alpha$ denote the validator distribution ratio. Let $V_i$ denote the set of validators assigned to L2 $i$. The seigniorage received by validator $j$ is:
+\begin{equation}
+v_j = \sum_{i:\, j \in V_i} \frac{\alpha \cdot S_i}{|V_i|}
+\end{equation}
+where $S_i$ is the seigniorage allocated to L2 $i$ and $|V_i|$ is the number of validators in set $V_i$. The reward received by the sequencer of L2 $i$ is:
+\begin{equation}
+o_i = (1-\alpha) \cdot {S}_i
+\end{equation}
+This structure distributes validator rewards in proportion to their assigned workload, as validators monitoring larger L2s bear greater verification responsibilities. If no validators are assigned to L2 $i$ ($|V_i| = 0$), the validator portion $\alpha \cdot S_i$ is allocated to the DAO treasury. This design ensures that not only sequencers but also validators participating through the RAT (Randomized Attention Test) mechanism are included in the performance-driven reward model. This directly aligns the incentives of both sequencers and security contributors with the growth of the TON ecosystem.
+
+In summary, TON Staking V3 provides a sustainable seigniorage distribution framework by measuring L2 performance through Bridged TON, mitigating scale bias via the saturation function, and enforcing a minimum staking requirement as a security mechanism. Considering the structural differences from V2, the transition should be implemented gradually to minimize disruption to existing stakers. This framework is an essential foundation for ensuring that a TON-centric multi-rollup environment grows in a self-sustaining and stable manner over the long term.
+
