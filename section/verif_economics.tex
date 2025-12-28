@@ -11,15 +11,15 @@ As the chain becomes more heavily used, full nodes must process more transaction
 Over time, this creates an implicit economic filter:
 only entities that can afford the rising operational cost can remain fully verifying participants.
 
-Rollup-based architectures decouple execution from base-layer consensus.
+Rollup-based architectures decouple execution from base-layer consensus\cite{buterin2021rollups}. 
 Execution is moved to a separate layer (an L2 rollup) while the L1 blockchain like Ethereum provides data
 availability and a final arbiter of correctness.
 In this model, the bottleneck is not how many computations the L1 can perform, but how many state transitions it can verify or accept as economically safe.
 Rollups extend the total execution capacity of the ecosystem, but they do not eliminate the requirement that at least some participants continuously monitor and verify off-chain activity.
 
 There are two dominant rollup constructions.
-Optimistic rollups assume that submitted state transitions are valid by default and rely on \emph{fraud proofs} (or called fault proofs): if any party detects an invalid state transition, it can submit a proof that demonstrates the fraud to the L1.
-ZK rollups require each batch of state transitions to be accompanied by a succinct cryptographic proof of correctness, known as a validity proof.
+Optimistic rollups assume that submitted state transitions are valid by default and rely on \emph{fraud proofs} (or called fault proofs): if any party detects an invalid state transition, it can submit a proof that demonstrates the fraud to the L1 \cite{teutsch2019truebit,truebit2024unchained}.
+ZK rollups require each batch of state transitions to be accompanied by a succinct cryptographic proof of correctness, known as a validity proof \cite{ben2018scalable}.
 Both models improve scalability, yet both are constrained by verification:
 someone must either detect and prove fraud, or produce and verify succinct proofs.
 In addition, both models are subject to data-availability constraints that must ultimately be resolved on the L1.
@@ -28,10 +28,10 @@ Verification in such systems is not free.
 Monitoring rollup activity requires computational resources and capital at risk.
 Submitting fraud proofs or producing validity proofs incurs gas costs and opportunity costs.
 On the other hand, the economic damage from a successful attack (for example, inclusion of a fraudulent batch or failure to respond to an invalid state transition) can be much larger than the individual cost that a single verifier faces.
-Without explicit incentives, rational agents have little reason to bear the full cost of verification, and verification becomes underprovided.
+Without explicit incentives, rational agents have little reason to bear the full cost of verification, and verification becomes underprovided\cite{luu2015demystifying}.
 
 The core design problem is therefore economic. The protocol must ensure that the expected reward for honest verification, and the expected penalty
-for dishonest or negligent behavior, are large enough that rational agents prefer to verify.
+for dishonest or negligent behavior, are large enough that rational agents prefer to verify\cite{tas2022accountable,li2023security}.
 This is what we call \emph{verification economics}.
 A verification-economics layer is responsible for:
 \begin{itemize}
@@ -119,7 +119,7 @@ Sequencers may attempt to post invalid state transitions or censor transactions.
 Validators may fail to monitor the system or to respond to fraud in a timely manner.
 Users and liquidity providers face withdrawal delays and bear the risk that the system does not respond correctly to invalid states during the challenge period.
 
-While optimistic rollups rely on the straightforward assumption that there is at least one honest validator, the verifier's dilemma \cite{luu2015demystifying} still arises in blockchain systems, and related failures have been observed in practice.
+While optimistic rollups rely on the straightforward assumption that there is at least one honest validator, the verifier's dilemma \cite{luu2015demystifying} still arises in blockchain systems, and related failures have been observed in practice \cite{kalodner2020arbitrum}.
 Tokamak Network proposes two complementary mechanisms at the economic layer to address these incentive risks: the Randomized Attention Test (RAT), which incentivizes continuous verification effort by validators, and Fast Withdrawal, which allows users to exit L2s more quickly while tying liquidity provision to the security guaranteed by staked TON.
 
 
