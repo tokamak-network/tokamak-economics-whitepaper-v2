@@ -9,7 +9,7 @@ Early general-purpose blockchains attempted to scale by increasing on-chain exec
 However, execution throughput, state size, and verification cost tend to grow together.
 As the chain becomes more heavily used, full nodes must process more transactions per unit time, store a larger global state, and spend more resources to verify new blocks.
 Over time, this creates an implicit economic filter:
-only entities that can afford the rising operational cost can remain fully verifying participants.
+only entities that can afford the rising operational cost can remain fully verifying participants. Earlier off-chain scaling approaches such as Plasma \cite{poon2017plasma} faced data-availability challenges. Rollups address this by posting transaction data on-chain.
 
 Rollup-based architectures decouple execution from base-layer consensus\cite{buterin2021rollups}. 
 Execution is moved to a separate layer (an L2 rollup) while the L1 blockchain like Ethereum provides data
@@ -119,7 +119,7 @@ Sequencers may attempt to post invalid state transitions or censor transactions.
 Validators may fail to monitor the system or to respond to fraud in a timely manner.
 Users and liquidity providers face withdrawal delays and bear the risk that the system does not respond correctly to invalid states during the challenge period.
 
-While optimistic rollups rely on the straightforward assumption that there is at least one honest validator, the verifier's dilemma \cite{luu2015demystifying} still arises in blockchain systems, and related failures have been observed in practice \cite{kalodner2020arbitrum}.
+While optimistic rollups rely on the straightforward assumption that there is at least one honest validator, the verifier's dilemma \cite{luu2015demystifying} still arises in blockchain systems, and related failures have been observed in practice \cite{kalodner2018arbitrum}.
 Tokamak Network proposes two complementary mechanisms at the economic layer to address these incentive risks: the Randomized Attention Test (RAT), which incentivizes continuous verification effort by validators, and Fast Withdrawal, which allows users to exit L2s more quickly while tying liquidity provision to the security guaranteed by staked TON.
 
 
