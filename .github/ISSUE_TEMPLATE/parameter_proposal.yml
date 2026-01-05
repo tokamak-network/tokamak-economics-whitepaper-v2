@@ -1,0 +1,40 @@
+name: "Parameter / tuning proposal"
+description: "Suggest parameter ranges, stability improvements, incentive alignment changes."
+title: "[PARAM] "
+labels: ["type:param", "prio:P2-medium", "status:needs-info"]
+body:
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What parameter(s) should change and how?
+      placeholder: "Example: Set alpha within [0.2, 0.4], or make it function of ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: What problem does this solve? (stability, fairness, anti-sybil, etc.)
+      placeholder: "Goal: reduce whale dominance while preserving ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Expected impact / trade-offs
+      description: Who benefits/loses? Any known downside?
+      placeholder: "Pros: ... Cons: ... Risk: ..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Provide simulation results, references, or reasoning if available.
+      placeholder: "If you ran simulations, link results or include a short table."
+    validations:
+      required: false
