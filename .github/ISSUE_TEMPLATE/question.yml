@@ -16,6 +16,6 @@ body:
     attributes:
       label: Location (optional)
       description: Section/page/equation reference if applicable.
-     placeholder: "e.g., Section 3.1, Page 6"
+      placeholder: "e.g., Section 3.1, Page 6"
     validations:
       required: false

@@ -37,3 +37,15 @@ body:
       description: Any fairness, complexity, or incentive concerns.
     validations:
       required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: "How important is this feedback?"
+      options:
+        - P3 (nice-to-have)
+        - P2 (should improve)
+        - P1 (important)
+    validations:
+      required: true

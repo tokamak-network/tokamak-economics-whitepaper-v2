@@ -40,9 +40,9 @@ body:
       required: false
 
   - type: dropdown
-    id: severity
+    id: priority
     attributes:
-      label: Severity
+      label: Priority
       options:
         - P3 (minor clarity)
         - P2 (affects understanding)

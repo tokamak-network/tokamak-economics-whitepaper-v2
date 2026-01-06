@@ -38,5 +38,6 @@ body:
         - P3 (nice-to-have)
         - P2 (should improve)
         - P1 (important)
+        - P0 (critical)
     validations:
       required: true

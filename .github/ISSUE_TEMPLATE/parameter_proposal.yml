@@ -38,3 +38,16 @@ body:
       placeholder: "If you ran simulations, link results or include a short table."
     validations:
       required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: "Assess the urgency of this proposal."
+      options:
+        - P3 (nice-to-have)
+        - P2 (should improve)
+        - P1 (important)
+        - P0 (critical)
+    validations:
+      required: true
