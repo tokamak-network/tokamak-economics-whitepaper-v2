@@ -44,9 +44,9 @@ body:
     attributes:
       label: Priority
       options:
-        - P3 (minor clarity)
-        - P2 (affects understanding)
-        - P1 (affects results)
-        - P0 (critical / exploitable)
+        - P3 (nice-to-have)
+        - P2 (should improve)
+        - P1 (important)
+        - P0 (critical)
     validations:
       required: true
