@@ -1,0 +1,21 @@
+name: "Question"
+description: "Ask a question; we will answer and/or route it to the right category."
+title: "[Q] "
+labels: ["type:question", "prio:P3-low", "status:needs-info"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: Ask clearly; reference the section if relevant.
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Location (optional)
+      description: Section/page/equation reference if applicable.
+      placeholder: "e.g., Section 3.1, Page 6"
+    validations:
+      required: false

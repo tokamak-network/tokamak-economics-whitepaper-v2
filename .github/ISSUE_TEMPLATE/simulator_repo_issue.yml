@@ -1,0 +1,60 @@
+name: "Simulator / reproducibility / results"
+description: "Reproduction failures, inconsistent results, code issues, or new result suggestions."
+title: "[SIM] "
+labels: ["type:sim", "prio:P2-medium", "status:needs-info"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What happened? What did you expect instead?
+      placeholder: "Example: Running scenario X produces different APY curve than in the blog post ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, language/runtime version, commit hash, etc.
+      placeholder: "OS: Ubuntu 22.04 | Python 3.11 | Commit: abc123 | CPU/GPU: ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Command lines + config + input data pointers.
+      placeholder: "1) git checkout ...\n2) pip install ...\n3) python run.py --config ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Output / logs
+      description: Paste relevant output (short) or attach files.
+      placeholder: "Paste error stack trace or key output lines."
+    validations:
+      required: false
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested fix or improvement
+      description: Optional.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - P3 (nice-to-have)
+        - P2 (should improve)
+        - P1 (important)
+        - P0 (critical)
+    validations:
+      required: true

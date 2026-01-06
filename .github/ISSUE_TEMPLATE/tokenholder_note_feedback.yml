@@ -1,0 +1,52 @@
+name: "Token-holder note / impact feedback"
+description: "Feedback on the token-holder-facing supplement (strategy, formulas, clarity)."
+title: "[TOKENHOLDER] "
+labels: ["type:tokenholder", "prio:P2-medium", "status:needs-info"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What is unclear or missing for token holders?
+      placeholder: "Example: The optimal strategy formula is not actionable without a worked example ..."
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Location
+      description: Section/page reference in the token-holder note.
+      placeholder: "e.g., Impact Note Section 2, Page 3"
+    validations:
+      required: false
+
+  - type: textarea
+    id: what_needed
+    attributes:
+      label: What should be added
+      description: Examples, simplified explanation, calculator, FAQ, etc.
+      placeholder: "Add example cases for small/large holders; include boundary conditions; add FAQ about ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: risk
+    attributes:
+      label: Perceived risk / concerns
+      description: Any fairness, complexity, or incentive concerns.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: "How important is this feedback?"
+      options:
+        - P3 (nice-to-have)
+        - P2 (should improve)
+        - P1 (important)
+        - P0 (critical)
+    validations:
+      required: true

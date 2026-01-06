@@ -1,0 +1,43 @@
+name: "Doc feedback / clarification"
+description: "Typos, unclear wording, missing explanation, structure suggestions."
+title: "[DOC] "
+labels: ["type:doc", "prio:P3-low", "status:needs-info"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What is unclear or incorrect?
+      placeholder: "Example: Section 2.3 wording is ambiguous about ... / p.5 equation description mismatches ..."
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Location
+      description: Section/page/figure/table reference.
+      placeholder: "e.g., Section 3.2, Page 7, Figure 4"
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested improvement
+      description: Provide a concrete rewrite or bullet suggestions if possible.
+      placeholder: "Proposed text: ... / Suggest adding a paragraph explaining ..."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - P3 (nice-to-have)
+        - P2 (should improve)
+        - P1 (important)
+        - P0 (critical)
+    validations:
+      required: true

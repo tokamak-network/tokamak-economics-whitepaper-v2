@@ -1,0 +1,52 @@
+name: "Model / assumptions / math issue"
+description: "Potential inconsistency, missing assumption, definition mismatch, math errors."
+title: "[MODEL] "
+labels: ["type:model", "prio:P2-medium", "status:needs-info"]
+body:
+  - type: textarea
+    id: claim
+    attributes:
+      label: Issue statement
+      description: What is the suspected problem? Be precise.
+      placeholder: "Example: The definition of X in Section 2 conflicts with Equation (3) ..."
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Location
+      description: Section/page/equation reference.
+      placeholder: "e.g., Section 4.1, Eq.(7), Page 10"
+    validations:
+      required: true
+
+  - type: textarea
+    id: reasoning
+    attributes:
+      label: Reasoning / evidence
+      description: Explain why it is a problem; include counterexample if possible.
+      placeholder: "Counterexample: if A=..., then ... contradicts ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_fix
+    attributes:
+      label: Proposed fix
+      description: Optional, but helpful (alternative definition, patched assumption, revised equation).
+      placeholder: "Suggested correction: redefine ... / add assumption ... / modify Eq..."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - P3 (nice-to-have)
+        - P2 (should improve)
+        - P1 (important)
+        - P0 (critical)
+    validations:
+      required: true
