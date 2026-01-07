@@ -62,7 +62,7 @@
   description: "Work is actively being done on this issue"
 
 - name: "status:waiting-review"
-  color: "FBCA04"  # yellow
+  color: "FB8500"  # orange
   description: "Issue is ready for review"
 
 - name: "status:resolved"
@@ -74,6 +74,6 @@
   description: "Issue will not be addressed"
 
 - name: "status:duplicate"
-  color: "C2E0C6"  # light gray
+  color: "C2E0C6"  # light green
   description: "This issue is a duplicate of another issue"
 

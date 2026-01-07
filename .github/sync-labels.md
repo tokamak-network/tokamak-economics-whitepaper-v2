@@ -27,7 +27,7 @@ This repository uses labels defined in `.github/labels.yml` for issue management
 - `status:needs-info` - Needs info (color: #FBCA04)
 - `status:triaged` - Triaged (color: #1D76DB)
 - `status:in-progress` - In progress (color: #5319E7)
-- `status:waiting-review` - Waiting review (color: #FBCA04)
+- `status:waiting-review` - Waiting review (color: #FB8500)
 - `status:resolved` - Resolved (color: #0E8A16)
 - `status:wontfix` - Won't fix (color: #B60205)
 - `status:duplicate` - Duplicate (color: #C2E0C6)
@@ -48,5 +48,30 @@ github-label-sync --access-token $GITHUB_ACCESS_TOKEN \
 
 ## GitHub Actions (Recommended)
 
-You can set up a GitHub Action to automatically sync labels on push or manually trigger it.
+You can set up a GitHub Action to automatically sync labels on push to the main branch. Here is an example using the `lannonbr/issue-label-manager-action`:
+
+Create a file `.github/workflows/sync-labels.yml`:
+
+```yaml
+name: Sync Labels
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/labels.yml'
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  sync-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Sync GitHub Labels
+        uses: lannonbr/issue-label-manager-action@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: .github/labels.yml
+```
+
+This will ensure labels are always in sync with the `.github/labels.yml` file whenever it's updated on the main branch.
 
