@@ -1,7 +1,7 @@
 name: "Parameter / tuning proposal"
 description: "Suggest parameter ranges, stability improvements, incentive alignment changes."
 title: "[PARAM] "
-labels: ["type:param", "prio:P2-medium", "status:needs-info"]
+labels: ["type:param", "prio:P2", "status:needs-info"]
 body:
   - type: textarea
     id: proposal

@@ -1,7 +1,7 @@
 name: "Token-holder note / impact feedback"
 description: "Feedback on the token-holder-facing supplement (strategy, formulas, clarity)."
 title: "[TOKENHOLDER] "
-labels: ["type:tokenholder", "prio:P2-medium", "status:needs-info"]
+labels: ["type:tokenholder", "prio:P2", "status:needs-info"]
 body:
   - type: textarea
     id: summary
