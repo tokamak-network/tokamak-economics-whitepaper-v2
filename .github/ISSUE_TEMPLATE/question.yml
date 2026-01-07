@@ -1,7 +1,7 @@
 name: "Question"
 description: "Ask a question; we will answer and/or route it to the right category."
 title: "[Q] "
-labels: ["type:question", "prio:P3-low", "status:needs-info"]
+labels: ["type:question", "prio:P3", "status:needs-info"]
 body:
   - type: textarea
     id: question

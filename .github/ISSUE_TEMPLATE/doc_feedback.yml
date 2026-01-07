@@ -1,7 +1,7 @@
 name: "Doc feedback / clarification"
 description: "Typos, unclear wording, missing explanation, structure suggestions."
 title: "[DOC] "
-labels: ["type:doc", "prio:P3-low", "status:needs-info"]
+labels: ["type:doc", "prio:P3", "status:needs-info"]
 body:
   - type: textarea
     id: summary

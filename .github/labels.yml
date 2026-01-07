@@ -1,0 +1,79 @@
+# GitHub Issue Labels Configuration
+# This file defines labels for issue triaging and categorization
+# Can be used with tools like github-label-sync or similar
+
+# Type labels - categorize the type of issue
+- name: "type:doc"
+  color: "0E8A16"  # green
+  description: "Documentation feedback or clarification request"
+
+- name: "type:model"
+  color: "1D76DB"  # blue
+  description: "Model, assumptions, or math issue"
+
+- name: "type:param"
+  color: "5319E7"  # purple
+  description: "Parameter proposal or tuning suggestion"
+
+- name: "type:sim"
+  color: "006B75"  # teal
+  description: "Simulator, reproducibility, or results issue"
+
+- name: "type:attack"
+  color: "D93F0B"  # red
+  description: "Economic attack or security vulnerability"
+
+- name: "type:tokenholder"
+  color: "FBCA04"  # yellow
+  description: "Token-holder-facing note feedback"
+
+- name: "type:question"
+  color: "C2E0C6"  # light green
+  description: "General question"
+
+# Priority labels - urgency level
+- name: "prio:P0-critical"
+  color: "B60205"  # dark red
+  description: "Critical issue requiring immediate attention"
+
+- name: "prio:P1"
+  color: "D93F0B"  # red
+  description: "High priority - important issue"
+
+- name: "prio:P2"
+  color: "FBCA04"  # yellow
+  description: "Medium priority - should improve"
+
+- name: "prio:P3"
+  color: "0E8A16"  # green
+  description: "Low priority - nice to have"
+
+# Status labels - workflow tracking
+- name: "status:needs-info"
+  color: "FBCA04"  # yellow
+  description: "Awaiting additional information from reporter"
+
+- name: "status:triaged"
+  color: "1D76DB"  # blue
+  description: "Issue has been reviewed and categorized"
+
+- name: "status:in-progress"
+  color: "5319E7"  # purple
+  description: "Work is actively being done on this issue"
+
+- name: "status:waiting-review"
+  color: "FBCA04"  # yellow
+  description: "Issue is ready for review"
+
+- name: "status:resolved"
+  color: "0E8A16"  # green
+  description: "Issue has been resolved"
+
+- name: "status:wontfix"
+  color: "B60205"  # dark red
+  description: "Issue will not be addressed"
+
+- name: "status:duplicate"
+  color: "C2E0C6"  # light gray
+  description: "This issue is a duplicate of another issue"
+

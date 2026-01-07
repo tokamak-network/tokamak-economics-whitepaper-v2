@@ -1,7 +1,7 @@
 name: "Model / assumptions / math issue"
 description: "Potential inconsistency, missing assumption, definition mismatch, math errors."
 title: "[MODEL] "
-labels: ["type:model", "prio:P2-medium", "status:needs-info"]
+labels: ["type:model", "prio:P2", "status:needs-info"]
 body:
   - type: textarea
     id: claim

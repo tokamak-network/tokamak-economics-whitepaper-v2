@@ -1,7 +1,7 @@
 name: "Simulator / reproducibility / results"
 description: "Reproduction failures, inconsistent results, code issues, or new result suggestions."
 title: "[SIM] "
-labels: ["type:sim", "prio:P2-medium", "status:needs-info"]
+labels: ["type:sim", "prio:P2", "status:needs-info"]
 body:
   - type: textarea
     id: summary
