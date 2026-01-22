@@ -18,7 +18,7 @@ The third tier (Tier 3) is RAT, introduced in Section~\ref{subsec:risk-mitigatio
 Through this multi-tiered structure, both sequencers and validators are economically incentivized to behave honestly. Since slashing at each tier is applied to TON-denominated collateral, L2 security is anchored to the economic foundation of the TON ecosystem.
 
 \subsubsection{Economic Security for Sequencers}
-The economic security mechanisms applicable to sequencers correspond to Tiers 1 and 2 of the three-tiered model. All collateral and slashing are denominated and executed in TON.
+The economic security mechanisms applicable to sequencers correspond to Tiers 1 and 2 of the three-tiered model. The specific parameters for minimum bond requirements and slashing policies may be introduced or adjusted according to the operational needs and circumstances of Tokamak Network.
 
 \vspace{0.3cm}
 
@@ -28,33 +28,30 @@ In single-winner challenge systems, only the first valid challenger receives a r
 \vspace{0.3cm}
 
 \paragraph{\textbf{Sequencer Deposits.}}
-The protocol requires each sequencer to maintain a collateral bond ($D_{\text{sequencer}}$) representing their commitment to the network. Let $C_{\max}$ denote the estimated worst-case on-chain cost of executing a single fraud proof. Since Tokamak Network supports multiple independent challengers submitting fraud proofs concurrently, the bond must cover all challengers' verification costs plus an additional reward pool. Let $H_{\max}$ denote the maximum number of concurrent challengers and $\Delta_{sequencer}$ the additional reward provided by a sequencer. The collateral bond is expressed as:
+The protocol may require each sequencer to maintain a collateral bond ($D_{\text{sequencer}}$) representing their commitment to the network. Let $C_{\max}$ denote the estimated worst-case on-chain cost of executing a single fraud proof. Since Tokamak Network supports multiple independent challengers submitting fraud proofs concurrently, the bond must cover all challengers' verification costs plus an additional reward pool. Let $H_{\max}$ denote the maximum number of concurrent challengers and $\Delta_{sequencer}$ the additional reward provided by a sequencer. The collateral bond is expressed as:
 \begin{equation}
 D_{\text{sequencer}} = H_{\max} \cdot C_{\max} + \Delta_{sequencer}
 \end{equation}
+For seigniorage eligibility, sequencers must meet the minimum requirement based on bridged TON ($B_i$) with threshold $\theta$ (see Section \ref{section:siegniorage}. Combining these requirements, the deposit is:
+\begin{equation}
+D_{\text{sequencer}} = \max(H_{\max} \cdot C_{\max} + \Delta_{\text{sequencer}},\; \theta \cdot B_i)
+\end{equation}
+If the remaining deposit falls below the seigniorage eligibility threshold ($\theta \cdot B_i$), the slashed sequencer loses seigniorage eligibility until the deposit is restored.
 
 \paragraph{\textbf{Sequencer Slashing.}}
-When a fraud proof succeeds, whether submitted by a challenger or validator, the entire bond ($D_{\text{sequencer}}$) is slashed. If $n$ challengers win the challenge (where $n \leq H_{\max}$), each successful challenger receives:
+To ensure protocol integrity and economic deterrence, slashing policies may be introduced as follows: When a fraud proof succeeds, whether submitted by a challenger or validator, the entire bond ($D_{\text{sequencer}}$) is slashed. If $n$ challengers win the challenge (where $n \leq H_{\max}$), each successful challenger receives:
 \begin{equation}
 R_{\text{challenger}} = C_{\max} + \frac{\Delta_{sequencer}}{n}
 \end{equation}
-The remainder is transferred to the protocol treasury. This is intended to provide rewards that can exceed verification costs. A slashed sequencer is suspended from sequencing according to protocol rules. To resume operation, the sequencer must restore the bond within the re-bond period; failure to do so results in permanent removal from the active sequencer set. However, if the system has multi-sequencer enabled, other sequencers can continue L2 operation during this period.
-
-\begin{comment}
-To strengthen deterrence against repeat violations, if a sequencer commits fraud multiple times within a specified period, the required bond amount increases by a penalty factor $\gamma > 1$. A slashing window is applied from the point of slashing, and within this window, the required $D_{\text{sequencer}}$ for subsequent violations increases as follows:
-\begin{equation}
-D_{\text{sequencer}}^{(n)} = \gamma^{n-1} \cdot D_{\text{sequencer}}^{(1)}
-\end{equation}
-where $n$ is the number of violations. Through this escalating penalty for repeated misconduct, Tokamak Network L2 aims to enhance the soundness of the L2 ecosystem. Note that fraud by other sequencers is not considered; only fraud by the same sequencer is taken into account. Failure to post the increased bond results in removal from the active sequencer set.
-
-\subsubsection{Economic Security for Validators}
-The economic security mechanisms applicable to validators correspond to Tier 3 of the three-tiered model. As with the sequencer, all deposits and slashing are denominated and conducted in TON.
-\end{comment}
+The remainder is transferred to the protocol treasury. This is intended to provide rewards that can exceed verification costs. 
 
 \vspace{0.3cm}
 
+\subsubsection{Economic Security for Validators}
+Validators are subject to Tier 3 of the security model, which ensures continuous monitoring through RAT. As with sequencers, the specific parameters may be introduced or adjusted based on operational needs.
+
 \paragraph{\textbf{Validator Deposits.}}
-Each validator is required to maintain a collateral deposit $D_{\text{validator}}$ that serves as the economic guarantee of its attentiveness. According to recent research by Tokamak Network~\cite{Lee2025RAT}, this can be analyzed from a game-theoretic perspective: each validator faces a binary strategic choice in every epoch, either remain attentive (online) or become inattentive (offline). Let $c_m$ denote the per-epoch cost of maintaining attentiveness. Staying attentive incurs $c_m$ but avoids penalties. Going offline saves this cost but risks being selected by RAT and penalized. Let $\pi_a$ denote the system-wide probability that RAT triggers an attention test in a given epoch, and let $N$ be the number of validators. When RAT triggers, one validator is selected uniformly at random, so each validator faces a selection probability of $\frac{\pi_a}{N}$. For attentiveness to be the dominant strategy, the expected penalty from being offline must exceed the cost savings. Let $C_{\text{off}}$ denote the slashing penalty for failing an attention test. The RAT equilibrium condition under the model ensuring that online behavior strictly dominates offline behavior is given by
+Each validator may be required to maintain a collateral deposit $D_{\text{validator}}$ that serves as the economic guarantee of its attentiveness. According to recent research by Tokamak Network~\cite{Lee2025RAT}, this can be analyzed from a game-theoretic perspective: each validator faces a binary strategic choice in every epoch, either remain attentive (online) or become inattentive (offline). Let $c_m$ denote the per-epoch cost of maintaining attentiveness. Staying attentive incurs $c_m$ but avoids penalties. Going offline saves this cost but risks being selected by RAT and penalized. Let $\pi_a$ denote the system-wide probability that RAT triggers an attention test in a given epoch, and let $N$ be the number of validators. When RAT triggers, one validator is selected uniformly at random, so each validator faces a selection probability of $\frac{\pi_a}{N}$. For attentiveness to be the dominant strategy, the expected penalty from being offline must exceed the cost savings. Let $C_{\text{off}}$ denote the slashing penalty for failing an attention test. The RAT equilibrium condition under the model ensuring that online behavior strictly dominates offline behavior is given by
 \begin{equation}
   c_m \;\le\; \frac{\pi_a}{N} \cdot C_{\text{off}}.
 \end{equation}
@@ -66,10 +63,9 @@ Letting $\Delta_{\text{validator}}$ denote an additional buffer contributed by t
 \begin{equation}
   D_{\text{validator}} = C_{\text{off}} + \Delta_{\text{validator}}.
 \end{equation}
-This structure ensures that even after a slashing event, the validator retains sufficient collateral ($\Delta_{\text{validator}}$) to continue operating without immediate removal.
 
 \paragraph{\textbf{Validator Slashing.}}
-Slashing for validators is applied solely in the context of RAT. When an attention test is triggered with probability $\pi_a$, the selected validator must respond within the required time window. Failure to do so triggers a slashing event in which a penalty $C_{\text{off}}$ is deducted from the validator's deposit. If the remaining deposit falls below the minimum threshold $D_{\min}$, the validator must replenish it within a specified period; otherwise, the validator is removed from the active validator set. The mechanism is designed so that, under the chosen parameters, attentiveness is each validator’s rational strategy.
+In cases where slashing is introduced, the following mechanism may apply to validators: Slashing for validators is applied solely in the context of RAT. When an attention test is triggered with probability $\pi_a$, the selected validator must respond within the required time window. Failure to do so triggers a slashing event in which a penalty $C_{\text{off}}$ is deducted from the validator's deposit. When a minimum threshold $D_{\min}$ is introduced, any validator whose remaining deposit falls below this value loses seigniorage eligibility until the deposit is restored. The mechanism is designed so that, under the chosen parameters, attentiveness is each validator's rational strategy.
 
 \subsection{L2 Gas}
 TON functions as the native gas token consumed for transaction execution on L2. Users pay TON for all activities on L2, including contract calls, data processing, and asset transfers, creating an ongoing, utility-driven source of demand for TON. As transaction volume on L2 increases, the amount of TON consumed also rises, meaning the gas utility of TON is closely tied to the scalability and throughput of L2.

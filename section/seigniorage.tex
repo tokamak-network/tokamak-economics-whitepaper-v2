@@ -32,7 +32,7 @@ Seigniorage distribution refers to the allocation of newly issued TON to partici
 
 TON Staking V3 is Tokamak Network's new token-economy model that distributes seigniorage based on the performance of L2 ecosystems. Figure~\ref{fig:seigniorage_allocation_structure} illustrates the overall structure of this model. While the previous V1/V2 models allocated rewards simply in proportion to the size of deposits, V3 defines Bridged TON as the primary performance metric of each L2 and uses it as the central criterion for distribution. This approach is intended to discourage artificial TVL inflation using external assets and provides a closer proxy for TON-native economic activity generated within the TON ecosystem. 
 
-As we can see in Figure~\ref{fig:seigniorage_allocation_structure}, the model distributes staking rewards in proportion to each L2's measured performance, but applies diminishing marginal returns as performance increases. This encourages early ecosystem growth and prevents excessive seigniorage concentration by large participants. When aggregate L2 performance is low, effective seigniorage distribution decreases, which drives continuous growth and enables effective supply management based on performance. Validators also share in these performance-based rewards, and their incentives are aligned with overall ecosystem growth.
+As we can see in Figure~\ref{fig:seigniorage_allocation_structure}, the model distributes rewards in proportion to each L2's measured performance, but applies diminishing marginal returns as performance increases. This encourages early ecosystem growth and prevents excessive seigniorage concentration by large participants. When aggregate L2 performance is low, effective seigniorage distribution decreases, which drives continuous growth and enables effective supply management based on performance. Validators also share in these performance-based rewards, and their incentives are aligned with overall ecosystem growth.
 
 \vspace{0.5cm}
 
@@ -47,7 +47,7 @@ S_{\mathrm{DAO}} = d \cdot A
 \end{equation}
 where $d \in (0,1)$ is the DAO distribution parameter. Additionally, any undistributed seigniorage to L2s is also allocated to the DAO, which may use the funds for ecosystem reinvestment and public infrastructure development. Under Rule 1, this structure indirectly controls the effective supply actually released.
 
-\textbf{Rule 3 (Bridged TON as Performance Metric).} L2 performance is measured by its Bridged TON amount. We define $B_i$ as the amount of TON bridged to L2 $i$, and $T_i$ as the amount of TON staked by the L2 sequencer on the L1 TON staking contract.
+\textbf{Rule 3 (Bridged TON as Performance Metric).} L2 performance is measured by its Bridged TON amount. We define $B_i$ as the amount of TON bridged to L2 $i$, and $T_i$ as the amount of TON staked by the L2 sequencer on the L1 contract.
 
 \textbf{Rule 4 (Minimum Staking Requirement).} Seigniorage allocation is not weighted by staking size; however, each L2 must satisfy the minimum staking requirement to be eligible for seigniorage in a given period:
 \begin{equation}
